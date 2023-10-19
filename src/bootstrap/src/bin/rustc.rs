@@ -277,7 +277,7 @@ fn format_rusage_data(child: Child) -> Option<String> {
     use windows::{
         Win32::Foundation::HANDLE,
         Win32::System::ProcessStatus::{
-            K32GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS, PROCESS_MEMORY_COUNTERS_EX,
+            GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS, PROCESS_MEMORY_COUNTERS_EX,
         },
         Win32::System::Threading::GetProcessTimes,
         Win32::System::Time::FileTimeToSystemTime,
@@ -308,7 +308,7 @@ fn format_rusage_data(child: Child) -> Option<String> {
     // Unlike on Linux with RUSAGE_CHILDREN, this will only return memory information for the process
     // with the given handle and none of that process's children.
     unsafe {
-        K32GetProcessMemoryInfo(
+        GetProcessMemoryInfo(
             handle,
             &mut memory_counters,
             std::mem::size_of::<PROCESS_MEMORY_COUNTERS_EX>() as u32,
